@@ -53,7 +53,7 @@
           ></v-autocomplete>
         </v-list-item>
         <v-list-item>
-         <v-btn type="submit" color="primary" value="поиск">Поиск</v-btn>
+         <v-btn block type="submit" color="primary" value="поиск">Поиск</v-btn>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>

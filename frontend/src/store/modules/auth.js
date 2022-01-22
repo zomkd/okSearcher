@@ -1,5 +1,5 @@
 const state = {
-    authenticated: false,
+    authenticated: JSON.parse(localStorage.getItem('authenticated') || 'false'),
 };
 
 const getters = {
@@ -11,6 +11,8 @@ const getters = {
 const mutations = {
   SET_AUTH: (state, payload) => {
     state.authenticated = payload
+
+    localStorage.setItem('authenticated', JSON.stringify(state.authenticated))
   },
 };
 

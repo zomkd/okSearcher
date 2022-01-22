@@ -40,7 +40,6 @@
       <v-tab-item v-for="item in items" :key="item.key">
         <v-main>
           <component :is="item.vueName"> </component>
-          <!-- <UserTable></UserTable> -->
         </v-main>
       </v-tab-item>
     </v-tabs-items>
@@ -48,26 +47,24 @@
 </template>
 
 <script>
-import UserTable from "./UserTable";
+import GeneralInfo from "./GeneralInfo";
 import TableActions from "./TableActions";
 import GraphActions from "./GraphActions";
+
 export default {
   name: "Navbar",
   components: {
-    UserTable,
+    GeneralInfo,
     TableActions,
     GraphActions
-    // SearchByUrl,
   },
   data() {
     return {
       drawer: false,
       tab: null,
-      // items: ["Общее", "Таблицы", "Графы"],
-      // items: ["UserTable","TableActions","GraphActions"]
       items: [
         {
-          vueName: "UserTable",
+          vueName: "GeneralInfo",
           forUser: "Общее",
         },
         {
