@@ -37,6 +37,14 @@
           ></v-autocomplete>
         </v-list-item>
         <v-list-item>
+          <v-text-field
+            v-model="city"
+            name="city"
+            label="Город"
+            type="text"
+          ></v-text-field>
+        </v-list-item>
+        <v-list-item>
           <v-list-item-title>От</v-list-item-title>
           <v-autocomplete
             v-model="ageFrom"
@@ -68,6 +76,7 @@ export default {
       age: ["1", "2", "3"],
       ageFrom: "",
       ageBefore: "",
+      city: "",
       country: "",
       countries: ["Afghanistan", "Albania", "Algeria"],
       firstname: "",

@@ -16,9 +16,11 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from okParser.views import get_status, run_task
+from okParser.credentials import set_credentials
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("tasks/<task_id>/", get_status, name="get_status"),
     path("tasks/", run_task, name="run_task"),
+    path('login/', set_credentials, name="set_credentials")
 ]

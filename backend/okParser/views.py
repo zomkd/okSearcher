@@ -23,6 +23,6 @@ def get_status(request, task_id):
         "task_id": task_id,
         "task_status": task_result.status,
         "task_result": task_result.result,
-        "current": task_result.info.get('current')
+        # "current": task_result.info.get('current')
     }
     return JsonResponse(result, status=200) 
