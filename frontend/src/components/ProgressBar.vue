@@ -25,6 +25,7 @@ export default {
     return {
       status: "",
       value: 0,
+      data: [],
     };
   },
   mounted() {
@@ -43,6 +44,8 @@ export default {
             this.value += 20;
             if (this.status === 'SUCCESS') {
             clearInterval(timerID)
+            this.data = response.data.task_data
+            this.$store.commit('SET_USERS',response.data.task_data)
             this.value = 100;
             this.stopLoading()
           }
@@ -53,7 +56,7 @@ export default {
     },
     stopLoading() {
       this.$emit("stopLoading", "")
-    }
+    },
   },
 };
 </script>

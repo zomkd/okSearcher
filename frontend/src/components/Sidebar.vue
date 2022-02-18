@@ -47,21 +47,23 @@
         <v-list-item>
           <v-list-item-title>От</v-list-item-title>
           <v-autocomplete
-            v-model="ageFrom"
+            v-model="fromAge"
             :items="age"
             label="Возраст"
             placeholder="Выберите..."
           ></v-autocomplete>
           <v-list-item-title>До</v-list-item-title>
           <v-autocomplete
-            v-model="ageBefore"
+            v-model="tillAge"
             :items="age"
             label="Возраст"
             placeholder="Выберите..."
           ></v-autocomplete>
         </v-list-item>
-        <v-list-item>
+        <v-list-item >
+        <form ref="form" @submit.prevent="search()">
          <v-btn block type="submit" color="primary" value="поиск">Поиск</v-btn>
+        </form>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
@@ -69,19 +71,47 @@
 </template>
 
 <script>
+import axios from 'axios'
 export default {
   name: "Sidebar",
   data() {
     return {
-      age: ["1", "2", "3"],
-      ageFrom: "",
-      ageBefore: "",
+      age: ["14", "15", "16","17","18","19","20","21","22","23"],
+      fromAge: "",
+      tillAge: "",
       city: "",
       country: "",
-      countries: ["Afghanistan", "Albania", "Algeria"],
+      countries: ["Russia", "USA",],
       firstname: "",
       secondname: "",
     };
+  },
+  methods: {
+    async search() {
+      let data = new FormData();
+      data.set('firstname', this.firstname)
+      data.set('secondname', this.secondname)
+      data.set('fromAge', this.fromAge)
+      data.set('tillAge', this.tillAge)
+      data.set('city', this.city)
+      data.set('country', this.country)
+
+      await axios({
+        method: "post",
+          url: "http://localhost:8000/search/",
+          data: data,
+          config: {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+      }).then((res) => {
+          console.log(res);
+          // this.SET_TASK_ID(res.data.task_id);
+          this.$store.commit('SET_LOADING', true)
+          this.$store.commit('SET_SEARCH_TASK_ID',res.data.task_id)
+        });
+    }
   },
 };
 </script>

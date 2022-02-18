@@ -9,3 +9,12 @@ class Credentials(BaseModel):
     application_secret_key: str = ""
     session_key: str = ""
     session_secret_key: str = ""
+
+
+class SearchParams(BaseModel):
+    firstname: str = ""
+    secondname: str = ""
+    fromAge: str = ""
+    tillAge: str = ""
+    city: str = ""
+    country: str = ""

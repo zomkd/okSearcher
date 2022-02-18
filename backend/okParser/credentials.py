@@ -1,29 +1,14 @@
 from .types import Credentials
-from .tasks import login_ok
-from django.http import HttpResponse
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 
-credentials = Credentials()
-
-@csrf_exempt
-def set_credentials(request):
-    task = ''
-    if request.method == 'POST':
-        ok_credentilas = set_ok_credentials()
-        ok_credentilas['username'] = request.POST.get('username','')
-        ok_credentilas['password'] = request.POST.get('password','')
-        credentials = Credentials(**ok_credentilas)
-        task = login_ok.delay(credentials.dict())
-        print(task.id)
-        return JsonResponse({'msg': 'Login is success!','task_id': task.id}, status=200)
-    # if request.method == 'GET':
-    #     return JsonResponse({'msg': "Login is success!","task_id": task.id}, status=200)
-    return JsonResponse({'msg': "Login is fail!"}, status=400)
+# credentials = Credentials()
 
 def set_ok_credentials(): #TODO не должно задаваться в ручуную
-    return 'enter cred'
-
-
-
-
+    return {
+        'application_id': '512001008108', 
+        'application_key': 'CNOCGEKGDIHBABABA', 
+        'application_secret_key': '18B01FDF9A5084AFA1669DDB',
+        'session_key': 'tkn1EhliRxCEAvwDOeURwKjZU3ArOtKp15kUfrs4IkgZknRO3FNiQpBqGETq4tuK4FnC3',
+        'session_secret_key': '61db37441d2c3d823f7aee91a1104b97',
+        }
