@@ -95,7 +95,7 @@ export default {
       data.set('tillAge', this.tillAge)
       data.set('city', this.city)
       data.set('country', this.country)
-
+      this.$store.commit('SET_LOADING', true)
       await axios({
         method: "post",
           url: "http://localhost:8000/search/",
@@ -108,7 +108,7 @@ export default {
       }).then((res) => {
           console.log(res);
           // this.SET_TASK_ID(res.data.task_id);
-          this.$store.commit('SET_LOADING', true)
+
           this.$store.commit('SET_SEARCH_TASK_ID',res.data.task_id)
         });
     }

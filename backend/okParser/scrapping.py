@@ -77,27 +77,36 @@ def get_users_id(users_profile_url: list = None):
     return users_id
 
 def get_info(users_id: list = None):
-    # info = {'name': 'Igor', 'friendsCount': '2', 'birthDate': '12-12-12', 'isPrivate': True}
     users_info = []
-    # users_info = {}
-    # users_info['name'] = 'asd'
-    # users_info['birthDate'] = '12-1-2-3'
-    # users_info['isPrivate'] = True
-    # users_info['friendsCount'] = 1
     print(users_id)
     fields = 'NAME,BIRTHDAY,PRIVATE'
     for user_id in users_id:
         user_info = {}
         info = ok.users.getInfo(uids=user_id, fields=fields)
         print(info)
-        try:
+        try:    
             friends = ok.friends.get(fid=user_id)
-        except Exception as exc:
+        except Exception:
             friends = []
         print(friends)
+        user_info['id'] = user_id
         user_info['name'] = info[0]['name']
         user_info['birthDate'] = info[0]['birthday']
         user_info['isPrivate'] = info[0]['private']
         user_info['friendsCount'] = len(friends)
         users_info.append(user_info)
     return users_info
+
+
+def get_friends(users_id: list = None):
+    for user_id in users_id:
+        try:    
+            friends = ok.friends.get(fid=user_id)
+        except Exception:
+            friends = []
+    return friends
+
+def get_friends_info(users_id):
+    friends = get_friends(users_id)
+    friends_info = get_info(friends)
+    return friends_info

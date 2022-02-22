@@ -11,7 +11,7 @@
     </v-card-title>
     <v-data-table
       v-model="selected"
-      item-key="name"
+      item-key="id"
       show-select
       :headers="this.headers"
       :items="info"
@@ -78,6 +78,7 @@ export default {
       val || this.closeDelete();
     },
     selected(selection) {
+      console.log(selection[0])
       this.$store.commit('SET_SELECTED', selection)
     }
   },
@@ -85,9 +86,9 @@ export default {
     this.initialize();
   },
   methods: {
-    setSelected() {
-      this.SET_SELECTED(this.selected)
-    },
+    // setSelected() {
+    //   this.SET_SELECTED(this.selected)
+    // },
 
     initialize() {
       this.info = this.users;

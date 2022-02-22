@@ -3,7 +3,7 @@ import time
 from celery import shared_task, current_task
 from okSearch.celery import app
 
-from .scrapping import enter_login_params, get_users_info, enter_search_params
+from .scrapping import enter_login_params, get_users_info, enter_search_params,get_friends_info
 
 
 @app.task(bind=True)
@@ -17,6 +17,12 @@ def search_ok(self, search_params):
     enter_search_params(search_params)
     users_info = get_users_info()
     return users_info
+
+@app.task(bind=True)
+def get_user_friends(self, user_friends_id):
+    self.update_state(state='PROGRESS')
+    friends_info = get_friends_info(user_friends_id)
+    return friends_info
 
 @app.task(bind=True)
 def create_task(self, task_type):

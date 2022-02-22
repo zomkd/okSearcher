@@ -2,7 +2,9 @@ const state = {
     users: JSON.parse(localStorage.getItem('users') || '[]'),
     selected: JSON.parse(localStorage.getItem('selected') || '[]'),
     task_id: "",
+    user_friends_task_id: "",
     loading: true,
+    user_friends: [],
 };
 
 const getters = {
@@ -17,6 +19,12 @@ const getters = {
   },
   LOADING: state => {
     return state.loading
+  },
+  USER_FRIENDS: state => {
+    return state.user_friends
+  },
+  USER_FRIENDS_TASK_ID: state => {
+    return state.user_friends_task_id
   },
 };
 
@@ -36,8 +44,15 @@ const mutations = {
     state.task_id = ''
     state.task_id = payload
   },
+  SET_USER_FRIENDS_TASK_ID: (state, payload) => {
+    // state.user_friends_task_id = ''
+    state.user_friends_task_id = payload
+  },
   SET_LOADING: (state, payload) => {
     state.loading = payload
+  },
+  SET_USER_FRIENDS: (state, payload) => {
+    state.user_friends = payload
   },
 };
 

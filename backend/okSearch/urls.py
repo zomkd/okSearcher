@@ -15,8 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from okParser.views import get_status, set_credentials, set_search_params
-
+from okParser.views import get_status, set_credentials, set_search_params, set_user_friends
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -24,5 +23,6 @@ urlpatterns = [
     # path("tasks/", run_task, name="run_task"),
     path('login/', set_credentials, name="set_credentials"),
     path('search/', set_search_params, name="set_search_params"),
+    path('user_friends/', set_user_friends, name="set_user_friends"),
     # path('users/', )
 ]
