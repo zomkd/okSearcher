@@ -110,3 +110,50 @@ def get_friends_info(users_id):
     friends = get_friends(users_id)
     friends_info = get_info(friends)
     return friends_info
+
+def get_user_active_info(selected_user_id):
+    user_albums_info = ok.photos.getAlbums(fid = selected_user_id[0])#return list
+    print(user_albums_info['albums'])
+    album_photos = get_user_album_photos(user_albums_info['albums'])
+    likers = get_photo_likers(album_photos)
+    likers_id = extract_likers_id(likers)
+    likers_info = get_info(list(tuple(likers_id)))
+    user_active_info =  count_likers(likers_info, likers_id)
+
+    return user_active_info
+
+def get_user_album_photos(user_albums_info):
+    album_photos =[]
+    for album in user_albums_info:
+        print(album)
+        photos = ok.photos.getUserAlbumPhotos(aid = album['aid'])
+        
+        album_photos.extend(photos['photos'])
+        user_photos = ok.photos.getUserPhotos(fid = album['user_id'])
+        print(user_photos)
+        album_photos.extend(user_photos['photos'])
+    return album_photos
+
+def get_photo_likers(album_photos):
+    likers = []
+    print(album_photos)
+    for photo in album_photos:
+        print(photo)
+        users = ok.photos.getPhotoLikes(photo_id = photo['fid'])
+        if users.get('users', '') != '':
+            likers.extend(users['users'])
+
+    return likers
+
+def extract_likers_id(likers):
+    likers_id = []
+    for liker in likers:
+        likers_id.append(liker['uid'])
+    return likers_id
+
+def count_likers(likers_info, likers_id):
+    for liker in likers_info:
+        like_count = likers_id.count(liker['id'])
+        liker['likeCount'] = like_count
+
+    return likers_info

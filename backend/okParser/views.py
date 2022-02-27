@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from .types import SearchParams
 from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
-from .tasks import login_ok, search_ok, get_user_friends
+from .tasks import login_ok, search_ok, get_user_friends, get_user_active
 from .credentials import set_ok_credentials
 from okParser.tasks import create_task
 
@@ -52,6 +52,20 @@ def set_user_friends(request):
         return JsonResponse({'msg': 'User friends is success!','task_id': task.id}, status=200)
 
     return JsonResponse({'msg': "Search is fail!"}, status=400)
+
+@csrf_exempt
+def set_user_active(request):
+    if request.method == 'POST':
+        user_selected_id = []
+        selected = request.POST.get('selected_users','')
+        user_selected_id.append(selected)
+        print(user_selected_id)
+        task = get_user_active.delay(user_selected_id)
+
+        return JsonResponse({'msg': 'User active is success!','task_id': task.id}, status=200)
+
+    return JsonResponse({'msg': "User active is fail!"}, status=400)
+
 
 #TODO delete this func
 @csrf_exempt
