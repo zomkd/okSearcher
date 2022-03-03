@@ -2,7 +2,14 @@ from django.http import JsonResponse
 from .types import SearchParams
 from django.views.decorators.csrf import csrf_exempt
 from celery.result import AsyncResult
-from .tasks import login_ok, search_ok, get_user_friends, get_user_active
+from .tasks import (
+    login_ok, 
+    search_ok, 
+    get_user_friends, 
+    get_user_active,
+    get_user_info_by_ids,
+    get_user_common_friends,
+)
 from .credentials import set_ok_credentials
 from okParser.tasks import create_task
 
@@ -66,6 +73,31 @@ def set_user_active(request):
 
     return JsonResponse({'msg': "User active is fail!"}, status=400)
 
+@csrf_exempt
+def set_user_by_ids(request):
+    if request.method == 'POST':
+        userIDs = ""
+        userIDs = request.POST.get('userIDs', '')
+        print(userIDs)
+        userIDs = userIDs.split(',')
+        print(userIDs)
+        task = get_user_info_by_ids.delay(userIDs)
+        return JsonResponse({'msg': 'User seatch by id is success!','task_id': task.id}, status=200)
+
+    return JsonResponse({'msg': "User active is fail!"}, status=400)
+
+@csrf_exempt
+def set_user_common_friends(request):
+    if request.method == 'POST':
+        user_friends_ids = []
+        selected = request.POST.get('selected_users','')
+        user_friends_ids = selected.split(',')
+        print(user_friends_ids)
+        task = get_user_common_friends.delay(user_friends_ids)
+
+        return JsonResponse({'msg': 'User friends is success!','task_id': task.id}, status=200)
+
+    return JsonResponse({'msg': "Search is fail!"}, status=400)
 
 #TODO delete this func
 @csrf_exempt

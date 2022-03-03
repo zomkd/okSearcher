@@ -124,14 +124,15 @@ def get_user_active_info(selected_user_id):
 
 def get_user_album_photos(user_albums_info):
     album_photos =[]
+    user_photos = ok.photos.getUserPhotos(fid = user_albums_info[0]['user_id'])
+    print(user_photos)
+    album_photos.extend(user_photos['photos'])
     for album in user_albums_info:
         print(album)
         photos = ok.photos.getUserAlbumPhotos(aid = album['aid'])
         
         album_photos.extend(photos['photos'])
-        user_photos = ok.photos.getUserPhotos(fid = album['user_id'])
-        print(user_photos)
-        album_photos.extend(user_photos['photos'])
+        
     return album_photos
 
 def get_photo_likers(album_photos):
@@ -157,3 +158,33 @@ def count_likers(likers_info, likers_id):
         liker['likeCount'] = like_count
 
     return likers_info
+
+def get_users_info_by_id(userIDs: list):
+    return get_info(userIDs)
+
+def get_users_common_friends(user_friends_ids):
+    all_friends = get_all_friends(user_friends_ids)
+    common_friends = set_duplicated_elements(all_friends)
+    user_common_friends_info = get_info(common_friends)
+    return user_common_friends_info
+
+def get_all_friends(user_friends_ids):
+    all_friends = []
+    for id in user_friends_ids:
+        friends = ok.friends.get(fid=id)
+        all_friends.extend(friends)
+    return all_friends
+    
+def set_duplicated_elements(data: list) -> list:
+    """
+    Извлекает только повторяющиеся элементы
+    На вход: data: list ([1,1,3,3,4,4,5,6,7])
+    На выход: duplicate: list
+    duplicates = [1,3,4]
+    """
+    duplicates = []
+    for elem in data:
+        if data.count(elem) > 1 and elem not in duplicates:
+            duplicates.append(elem)
+
+    return duplicates

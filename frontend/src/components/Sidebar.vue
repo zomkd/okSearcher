@@ -65,6 +65,14 @@
          <v-btn block type="submit" color="primary" value="поиск">Поиск</v-btn>
         </form>
         </v-list-item>
+        <v-list-item>
+          <v-text-field v-model="userIDs" label="Введите ID пользователей"></v-text-field>
+        </v-list-item>
+        <v-list-item >
+        <form ref="form" @submit.prevent="searchByID()">
+         <v-btn block type="submit" color="primary" value="поиск">Поиск</v-btn>
+        </form>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
   </v-card>
@@ -84,6 +92,7 @@ export default {
       countries: ["Russia", "USA",],
       firstname: "",
       secondname: "",
+      userIDs: "",
     };
   },
   methods: {
@@ -99,6 +108,27 @@ export default {
       await axios({
         method: "post",
           url: "http://localhost:8000/search/",
+          data: data,
+          config: {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+      }).then((res) => {
+          console.log(res);
+          // this.SET_TASK_ID(res.data.task_id);
+
+          this.$store.commit('SET_SEARCH_TASK_ID',res.data.task_id)
+        });
+    },
+    async searchByID() {
+      let data = new FormData();
+      data.set('userIDs', this.userIDs)
+
+      this.$store.commit('SET_LOADING', true)
+      await axios({
+        method: "post",
+          url: "http://localhost:8000/searchByID/",
           data: data,
           config: {
             headers: {
