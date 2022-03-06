@@ -7,7 +7,6 @@
       ></v-app-bar-nav-icon>
       <v-toolbar-title>OKSearch</v-toolbar-title>
       <v-spacer></v-spacer>
-
       <v-btn icon>
         <v-icon>mdi-magnify</v-icon>
       </v-btn>
@@ -51,12 +50,13 @@ import GeneralInfo from "./GeneralInfo";
 import TableActions from "./TableActions";
 import GraphActions from "./GraphActions";
 
+
 export default {
   name: "Navbar",
   components: {
     GeneralInfo,
     TableActions,
-    GraphActions
+    GraphActions,
   },
   data() {
     return {

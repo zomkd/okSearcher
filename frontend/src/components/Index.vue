@@ -7,7 +7,9 @@
       <section v-else>
         <Navbar> </Navbar>
         <Sidebar></Sidebar>
+        <Footer></Footer>
       </section>
+      
     </v-app>
   </div>
 </template>
@@ -16,6 +18,7 @@
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 import ProgressBar from "./ProgressBar";
+import Footer from "./Footer";
 
 export default {
   name: "Index",
@@ -23,6 +26,7 @@ export default {
     Navbar,
     Sidebar,
     ProgressBar,
+    Footer,
     // UserTable,
     // SearchByUrl,
   },

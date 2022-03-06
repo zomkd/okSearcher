@@ -26,9 +26,9 @@ def enter_login_params(credentials):
 
 def enter_search_params(search_params):
     driver.get('https://ok.ru/dk?st.cmd=searchResult&st.mode=Users&st.grmode=Groups')
-    # fullname = _create_fullname(search_params)
+    fullname = _create_fullname(search_params)
     
-    driver.find_element_by_xpath("//input[@placeholder='Enter name']").send_keys('igor ilin')
+    driver.find_element_by_xpath("//input[@placeholder='Enter name']").send_keys(fullname)
     select = Select(driver.find_element_by_name('st.fromAge'))
     select.select_by_value(search_params['fromAge'])
     select = Select(driver.find_element_by_name('st.tillAge'))
@@ -164,18 +164,18 @@ def get_users_info_by_id(userIDs: list):
 
 def get_users_common_friends(user_friends_ids):
     all_friends = get_all_friends(user_friends_ids)
-    common_friends = set_duplicated_elements(all_friends)
+    common_friends = set_duplicated_elements(all_friends, len(user_friends_ids))
     user_common_friends_info = get_info(common_friends)
     return user_common_friends_info
 
 def get_all_friends(user_friends_ids):
     all_friends = []
-    for id in user_friends_ids:
-        friends = ok.friends.get(fid=id)
+    for friends_id in user_friends_ids:
+        friends = ok.friends.get(fid=friends_id)
         all_friends.extend(friends)
     return all_friends
     
-def set_duplicated_elements(data: list) -> list:
+def set_duplicated_elements(data: list, common_num: int) -> list:
     """
     Извлекает только повторяющиеся элементы
     На вход: data: list ([1,1,3,3,4,4,5,6,7])
@@ -184,7 +184,66 @@ def set_duplicated_elements(data: list) -> list:
     """
     duplicates = []
     for elem in data:
-        if data.count(elem) > 1 and elem not in duplicates:
+        if data.count(elem) == common_num and elem not in duplicates:
             duplicates.append(elem)
 
     return duplicates
+
+def get_users_obvious_connection(user_obvious_connections_ids):
+    common_friends = get_users_common_friends(user_obvious_connections_ids)
+    nodes = get_nodes(user_obvious_connections_ids, common_friends)
+    links = get_links(nodes,user_obvious_connections_ids)
+    obvious_connection = [nodes,links]
+    return obvious_connection
+
+def get_nodes(username: list, nodes_users: list) -> list:
+    """
+    Формирует nodes
+    На вход: username: list (нужен для формирования главных node, 
+    от которых строится граф), nodes_users: list
+    На выход: nodes: list
+    nodes = [{'id':12312, 'name': user1, ...}, ...]
+    """
+    try:
+        main_node_info = get_info(username)
+        nodes = []
+        for user in main_node_info:
+            main_node = {'id': user['id'],
+                        'group': user['id'],
+                        'title': user['id'],
+                        'label': user['name'],
+                        'value': 10,
+                        }
+            nodes.append(main_node)
+
+        for usual_node in nodes_users:  # формирует nodes специально для работы с графом
+            node = {}
+            node['id'] = usual_node['id']  # не везде pk
+            node['title'] = usual_node['id']
+            node['label'] = usual_node['name']
+            node['value'] = 0
+            # node['group'] = group
+            # node['_color'] = _color
+            nodes.append(node)
+    except Exception:
+        print(nodes_users)
+
+    return nodes
+
+def get_links(nodes: list, main_node: list) -> list:
+    """
+    Формирует links для отображения 
+    На вход: nodes: list, main_node: links
+    На выход: links: list
+    links = [{'sid':12312, 'tid': 11, ...}, ...]
+    """
+    links = []
+    for node in main_node:
+        for usual_node in nodes:
+            if usual_node['id'] not in main_node:
+                link = {}
+                link['to'] = usual_node['id']
+                link['from'] = node
+                links.append(link)
+
+    return links

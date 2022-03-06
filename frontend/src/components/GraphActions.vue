@@ -16,18 +16,18 @@
         </v-card>
       </v-col>
       <v-snackbar v-model="isEnoughUsers">
-          <p>Нужно вырать больше одного пользователя</p>
-          <template v-slot:action="{ attrs }">
-            <v-btn
-              color="pink"
-              text
-              v-bind="attrs"
-              @click="isEnoughUsers = false"
-            >
-              Close
-            </v-btn>
-          </template>
-        </v-snackbar>
+        <p>Нужно вырать больше одного пользователя</p>
+        <template v-slot:action="{ attrs }">
+          <v-btn
+            color="pink"
+            text
+            v-bind="attrs"
+            @click="isEnoughUsers = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
       <v-col cols="12" v-if="isObviousConnections">
         <ObviousConnections> </ObviousConnections>
       </v-col>
@@ -39,8 +39,15 @@
 </template>
 
 <script>
+import axios from "axios";
+import ObviousConnections from "./ObviousConnections";
+// import UnobviousConnections from "./UnobviousConnections";
 export default {
   name: "GraphActions",
+  components: {
+    ObviousConnections,
+    // UnobviousConnections,
+  },
   data() {
     return {
       actions: [
@@ -63,7 +70,7 @@ export default {
         if (this.$store.getters.SELECTED.length > 1) {
           console.log(this.$store.getters.SELECTED);
           this.isUnobviousConnections = false;
-      
+
           // this.isCommonActiveUsers = false;
           this.isObviousConnections = !this.isObviousConnections;
           if (this.isObviousConnections) {
@@ -76,7 +83,7 @@ export default {
       if (action === this.actions[1].name) {
         if (this.$store.getters.SELECTED.length > 1) {
           this.isObviousConnections = false;
-      
+
           // this.isCommonActiveUsers = false;
           this.isUnobviousConnections = !this.isUnobviousConnections;
           if (this.isUnobviousConnections) {
@@ -90,7 +97,7 @@ export default {
     getObviousConnections() {
       let data = new FormData();
       this.getUsersID(localStorage.getItem("selected"));
-       data.set("selected_users", this.users_id); //я хз почему так криво передаются данные, по всей видимости передается тольео строка
+      data.set("selected_users", this.users_id); //я хз почему так криво передаются данные, по всей видимости передается тольео строка
       console.log(data);
       axios({
         method: "post",
@@ -105,13 +112,16 @@ export default {
         console.log(res);
         // this.SET_TASK_ID(res.data.task_id);
         this.$store.commit("SET_LOADING", true);
-        this.$store.commit("SET_USER_OBVIOUS_CONNECTIONS_TASK_ID", res.data.task_id);
+        this.$store.commit(
+          "SET_USER_OBVIOUS_CONNECTIONS_TASK_ID",
+          res.data.task_id
+        );
       });
     },
     getUnobviousConnections() {
       let data = new FormData();
       this.getUsersID(localStorage.getItem("selected"));
-       data.set("selected_users", this.users_id); //я хз почему так криво передаются данные, по всей видимости передается тольео строка
+      data.set("selected_users", this.users_id); //я хз почему так криво передаются данные, по всей видимости передается тольео строка
       console.log(data);
       axios({
         method: "post",
@@ -126,11 +136,20 @@ export default {
         console.log(res);
         // this.SET_TASK_ID(res.data.task_id);
         this.$store.commit("SET_LOADING", true);
-        this.$store.commit("SET_USER_UNOBVIOUS_CONNECTIONS_TASK_ID", res.data.task_id);
+        this.$store.commit(
+          "SET_USER_UNOBVIOUS_CONNECTIONS_TASK_ID",
+          res.data.task_id
+        );
       });
     },
-
-  }
+    getUsersID(usersString) {
+      this.users_id = [];
+      let users = JSON.parse(usersString);
+      for (let i = 0; i < users.length; ++i) {
+        this.users_id.push(users[i]["id"]);
+      }
+    },
+  },
 };
 </script>
 

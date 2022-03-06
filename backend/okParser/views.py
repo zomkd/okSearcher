@@ -9,6 +9,8 @@ from .tasks import (
     get_user_active,
     get_user_info_by_ids,
     get_user_common_friends,
+    get_user_obvious_connections,
+    # get_user_unobvious_connections
 )
 from .credentials import set_ok_credentials
 from okParser.tasks import create_task
@@ -98,6 +100,32 @@ def set_user_common_friends(request):
         return JsonResponse({'msg': 'User friends is success!','task_id': task.id}, status=200)
 
     return JsonResponse({'msg': "Search is fail!"}, status=400)
+
+@csrf_exempt
+def set_user_obvious_connections(request):
+    if request.method == 'POST':
+        user_obvious_connections_ids = []
+        selected = request.POST.get('selected_users','')
+        user_obvious_connections_ids = selected.split(',')
+        print(user_obvious_connections_ids)
+        task = get_user_obvious_connections.delay(user_obvious_connections_ids)
+
+        return JsonResponse({'msg': 'User friends is success!','task_id': task.id}, status=200)
+
+    return JsonResponse({'msg': "Search is fail!"}, status=400)
+
+# @csrf_exempt
+# def set_user_unobvious_connections(request):
+#     if request.method == 'POST':
+#         user_unobvious_connections_ids = []
+#         selected = request.POST.get('selected_users','')
+#         user_unobvious_connections_ids = selected.split(',')
+#         print(user_unobvious_connections_ids)
+#         task = get_user_unobvious_connections.delay(user_unobvious_connections_ids)
+
+#         return JsonResponse({'msg': 'User friends is success!','task_id': task.id}, status=200)
+
+#     return JsonResponse({'msg': "Search is fail!"}, status=400)
 
 #TODO delete this func
 @csrf_exempt

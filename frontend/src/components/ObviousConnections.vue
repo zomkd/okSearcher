@@ -44,7 +44,7 @@ export default {
   methods: {
     stopLoading(data) {
       // this.loading = false;
-      this.$store.commit('SET_USER_OBVIOUS_CONNECTIONS', data)
+      this.$store.commit('SET_OBVIOUS_CONNECTIONS', data)
       this.$store.commit('SET_USER_OBVIOUS_CONNECTIONS_TASK_ID','')
       this.loading = false
       // this.$store.commit('SET_LOADING', false)

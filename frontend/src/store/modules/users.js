@@ -89,6 +89,14 @@ const mutations = {
     // state.user_friends_task_id = ''
     state.user_common_friends_task_id = payload
   },
+  SET_USER_OBVIOUS_CONNECTIONS_TASK_ID: (state, payload) => {
+    // state.user_friends_task_id = ''
+    state.user_obvious_connections_task_id = payload
+  },
+  SET_USER_UNOBVIOUS_CONNECTIONS_TASK_ID: (state, payload) => {
+    // state.user_friends_task_id = ''
+    state.user_unobvious_connections_task_id = payload
+  },
   SET_LOADING: (state, payload) => {
     state.loading = payload
   },

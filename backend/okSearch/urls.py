@@ -23,6 +23,8 @@ from okParser.views import (
     set_user_active,
     set_user_by_ids,
     set_user_common_friends,
+    set_user_obvious_connections,
+    # set_user_unobvious_connections
 )
 
 urlpatterns = [
@@ -35,5 +37,7 @@ urlpatterns = [
     path('user_active/', set_user_active, name="set_user_active"),
     path('searchByID/', set_user_by_ids, name="set_user_by_ids"),
     path('user_common_friends/', set_user_common_friends, name="set_user_common_friends"),
+    path('user_obvious_connections/', set_user_obvious_connections, name="set_user_obvious_connections"),
+    # path('user_unobvious_connections/', set_user_unobvious_connections, name="set_user_unobvious_connections"),
     # path('users/', )
 ]
