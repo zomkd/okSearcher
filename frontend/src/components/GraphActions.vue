@@ -31,9 +31,9 @@
       <v-col cols="12" v-if="isObviousConnections">
         <ObviousConnections> </ObviousConnections>
       </v-col>
-      <!-- <v-col cols="12" v-if="isActiveUsers">
+      <v-col cols="12" v-if="isUnobviousConnections">
         <UnobviousConnections> </UnobviousConnections>
-      </v-col> -->
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -41,12 +41,12 @@
 <script>
 import axios from "axios";
 import ObviousConnections from "./ObviousConnections";
-// import UnobviousConnections from "./UnobviousConnections";
+import UnobviousConnections from "./UnobviousConnections";
 export default {
   name: "GraphActions",
   components: {
     ObviousConnections,
-    // UnobviousConnections,
+    UnobviousConnections,
   },
   data() {
     return {

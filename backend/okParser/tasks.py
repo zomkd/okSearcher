@@ -11,7 +11,8 @@ from .scrapping import (
     get_user_active_info,
     get_users_info_by_id,
     get_users_common_friends,
-    get_users_obvious_connection
+    get_users_obvious_connection,
+    get_users_unobvious_connection,
 )
 
 
@@ -61,12 +62,12 @@ def get_user_obvious_connections(self, user_obvious_connections_ids):
     user_obvious_connections = get_users_obvious_connection(user_obvious_connections_ids)
     return user_obvious_connections
 
-# @app.task(bind=True)
-# def get_user_unobvious_connections(self, user_unobvious_connections_ids):
-#     self.update_state(state='PROGRESS')
-#     print(user_unobvious_connections_ids)
-#     user_unobvious_connections = get_users_unobvious_connection(user_unobvious_connections_ids)
-#     return user_unobvious_connections
+@app.task(bind=True)
+def get_user_unobvious_connections(self, user_unobvious_connections_ids):
+    self.update_state(state='PROGRESS')
+    print(user_unobvious_connections_ids)
+    user_unobvious_connections = get_users_unobvious_connection(user_unobvious_connections_ids)
+    return user_unobvious_connections
 
 @app.task(bind=True)
 def create_task(self, task_type):
