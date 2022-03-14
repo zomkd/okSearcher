@@ -34,6 +34,9 @@
       <v-col cols="12" v-if="isUnobviousConnections">
         <UnobviousConnections> </UnobviousConnections>
       </v-col>
+      <v-col cols="12" v-if="isActiveUsersAnalys">
+        <ActiveUsersAnalys> </ActiveUsersAnalys>
+      </v-col>
     </v-row>
   </v-container>
 </template>
@@ -42,11 +45,14 @@
 import axios from "axios";
 import ObviousConnections from "./ObviousConnections";
 import UnobviousConnections from "./UnobviousConnections";
+import ActiveUsersAnalys from "./ActiveUsersAnalys";
+
 export default {
   name: "GraphActions",
   components: {
     ObviousConnections,
     UnobviousConnections,
+    ActiveUsersAnalys,
   },
   data() {
     return {
@@ -55,9 +61,11 @@ export default {
           name: "Явные связи",
         },
         { name: "Неявные связи" },
+        { name: "Анализ активности пользователя" },
       ],
       isObviousConnections: false,
       isUnobviousConnections: false,
+      isActiveUsersAnalys: false,
       // isCommonActiveUsers: false,
       users_id: [],
       loading: true,
@@ -70,7 +78,7 @@ export default {
         if (this.$store.getters.SELECTED.length > 1) {
           console.log(this.$store.getters.SELECTED);
           this.isUnobviousConnections = false;
-
+          this.isActiveUsersAnalys = false;
           // this.isCommonActiveUsers = false;
           this.isObviousConnections = !this.isObviousConnections;
           if (this.isObviousConnections) {
@@ -83,11 +91,24 @@ export default {
       if (action === this.actions[1].name) {
         if (this.$store.getters.SELECTED.length > 1) {
           this.isObviousConnections = false;
-
+          this.isActiveUsersAnalys = false;
           // this.isCommonActiveUsers = false;
           this.isUnobviousConnections = !this.isUnobviousConnections;
           if (this.isUnobviousConnections) {
             this.getUnobviousConnections();
+          }
+        } else {
+          this.isEnoughUsers = !this.isEnoughUsers;
+        }
+      }
+      if (action === this.actions[2].name) {
+        if (this.$store.getters.SELECTED.length > 1) {
+          this.isObviousConnections = false;
+          // this.isCommonActiveUsers = false;
+          this.isUnobviousConnections = false
+          this.isActiveUsersAnalys = !this.isActiveUsersAnalys;
+          if (this.isActiveUsersAnalys) {
+            this.getActiveUsersAnalys();
           }
         } else {
           this.isEnoughUsers = !this.isEnoughUsers;
@@ -138,6 +159,30 @@ export default {
         this.$store.commit("SET_LOADING", true);
         this.$store.commit(
           "SET_USER_UNOBVIOUS_CONNECTIONS_TASK_ID",
+          res.data.task_id
+        );
+      });
+    },
+    getActiveUsersAnalys() {
+      let data = new FormData();
+      
+      data.set("analys_users", JSON.stringify(this.$store.getters.USER_UNOBVIOUS_CONNECTIONS))
+      // console.log(data);
+      axios({
+        method: "post",
+        url: "http://localhost:8000/analys_active_users/",
+        data: data,
+        config: {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      }).then((res) => {
+        console.log(res);
+        // this.SET_TASK_ID(res.data.task_id);
+        this.$store.commit("SET_LOADING", true);
+        this.$store.commit(
+          "SET_ANALYS_ACTIVE_USERS_TASK_ID",
           res.data.task_id
         );
       });

@@ -13,6 +13,7 @@ from .scrapping import (
     get_users_common_friends,
     get_users_obvious_connection,
     get_users_unobvious_connection,
+    get_active_analys,
 )
 
 
@@ -68,6 +69,13 @@ def get_user_unobvious_connections(self, user_unobvious_connections_ids):
     print(user_unobvious_connections_ids)
     user_unobvious_connections = get_users_unobvious_connection(user_unobvious_connections_ids)
     return user_unobvious_connections
+
+@app.task(bind=True)
+def get_analys_active_users(self, active_users):
+    self.update_state(state='PROGRESS')
+    print(active_users)
+    analys_active_users = get_active_analys(active_users)
+    return analys_active_users
 
 @app.task(bind=True)
 def create_task(self, task_type):

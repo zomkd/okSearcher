@@ -1,18 +1,3 @@
-"""okSearch URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/3.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
 from django.urls import path
 from okParser.views import (
@@ -24,7 +9,8 @@ from okParser.views import (
     set_user_by_ids,
     set_user_common_friends,
     set_user_obvious_connections,
-    set_user_unobvious_connections
+    set_user_unobvious_connections,
+    set_analys_active_users
 )
 
 urlpatterns = [
@@ -39,5 +25,7 @@ urlpatterns = [
     path('user_common_friends/', set_user_common_friends, name="set_user_common_friends"),
     path('user_obvious_connections/', set_user_obvious_connections, name="set_user_obvious_connections"),
     path('user_unobvious_connections/', set_user_unobvious_connections, name="set_user_unobvious_connections"),
+    path('analys_active_users/', set_analys_active_users, name="set_analys_active_users"),
+    
     # path('users/', )
 ]
