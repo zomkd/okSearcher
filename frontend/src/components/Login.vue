@@ -79,7 +79,7 @@ export default {
         }).then((res) => {
           // console.log(res);
           // this.SET_TASK_ID(res.data.task_id);
-          this.$store.commit('SET_TASK_ID',res.data.task_id)
+          this.$store.commit('SET_AUTH_TASK_ID',res.data.task_id)
         });
         // this.$store.dispatch("setAuth", {
         //   username: this.username,

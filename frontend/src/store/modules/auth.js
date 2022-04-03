@@ -26,7 +26,7 @@ const mutations = {
 
     localStorage.setItem('authenticated', JSON.stringify(state.authenticated))
   },
-  SET_TASK_ID: (state, payload) => {
+  SET_AUTH_TASK_ID: (state, payload) => {
     state.task_id = payload
   },
 };

@@ -1,24 +1,21 @@
 <template>
   <div>
-    <div v-if="getLoading && getTaskID != ''">
-      <ProgressBar :task_id="getTaskID" @stopLoading="stopLoading">
+    <div v-if="getLoading && getUserActiveTaskID != ''">
+      <ProgressBar :task_id="getUserActiveTaskID" @stopLoading="stopLoading">
       </ProgressBar>
     </div>
     <section v-else-if="!loading">
-      <UserTable :users="getUsers" :headers="headers"></UserTable>
-    </section>
-    <section v-else>
-
+      <UserTable :users="getUserActive" :headers="headers"></UserTable>
     </section>
   </div>
 </template>
-<!-- eslint-disable -->
+
 <script>
 import UserTable from "./UserTable";
 import ProgressBar from "./ProgressBar";
-import { mapMutations } from "vuex";
+
 export default {
-  name: "GeneralInfo",
+  name: "ActiveUsers",
   components: {
     UserTable,
     ProgressBar,
@@ -39,6 +36,10 @@ export default {
         { text: "Количество друзей", value: "friendsCount" },
         { text: "Дата рождения", value: "birthDate" },
         { text: "Приватность", value: "isPrivate" },
+        {
+          text: "Количество лайков под фотографиями пользователя",
+          value: "likeCount",
+        },
         { text: "Actions", value: "actions", sortable: false },
       ],
       users: [],
@@ -51,25 +52,21 @@ export default {
     getLoading() {
       return this.$store.getters.LOADING;
     },
-    getTaskID() {
-      return this.$store.getters.USERS_TASK_ID;
+    getUserActiveTaskID() {
+      return this.$store.getters.USER_ACTIVE_TASK_ID;
     },
-    getUsers() {
-      return this.$store.getters.USERS;
+    getUserActive() {
+      return this.$store.getters.USER_ACTIVE;
     },
   },
   methods: {
-    ...mapMutations([
-      "SET_USERS", // `this.increment()` будет вызывать `this.$store.commit('increment')`
-    ]),
     stopLoading(data) {
       // this.loading = false;
-      this.$store.commit('SET_USERS',data)
-      this.$store.commit('SET_SEARCH_TASK_ID','')
-      this.loading = false
+      this.$store.commit("SET_USER_ACTIVE", data);
+      this.$store.commit("SET_USER_ACTIVE_TASK_ID", "");
+      this.loading = false;
       // this.$store.commit('SET_LOADING', false)
     },
-  
   },
 };
 </script>

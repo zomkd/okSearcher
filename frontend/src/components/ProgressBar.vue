@@ -1,18 +1,18 @@
 <template>
-<div class="progress-bar">
-  <div class="text-center">
-    <v-progress-circular
-      :rotate="360"
-      :size="100"
-      :width="15"
-      :value="value"
-      color="teal"
-    >
-      {{ value }}
-    </v-progress-circular>
-    <p> Идет подключение...</p>
+  <div class="progress-bar">
+    <div class="text-center">
+      <v-progress-circular
+        :rotate="360"
+        :size="100"
+        :width="15"
+        :value="value"
+        color="teal"
+      >
+        {{ value }}
+      </v-progress-circular>
+      <p>Идет подключение...</p>
+    </div>
   </div>
-</div>
 </template>
 
 <script>
@@ -25,6 +25,7 @@ export default {
     return {
       status: "",
       value: 0,
+      usersData: [],
     };
   },
   mounted() {
@@ -41,19 +42,21 @@ export default {
             console.log(response);
             this.status = response.data.task_status;
             this.value += 20;
-            if (this.status === 'SUCCESS') {
-            clearInterval(timerID)
-            this.value = 100;
-            this.stopLoading()
-          }
+            if (this.status === "SUCCESS") {
+              clearInterval(timerID);
+              this.usersData = response.data.task_data;
+              // this.$store.commit('SET_USERS',response.data.task_data)
+              this.value = 100;
+              this.stopLoading()
+            }
             console.log(this.status);
           });
-          
       }, 5000);
     },
     stopLoading() {
-      this.$emit("stopLoading", "")
-    }
+      console.log(this.usersData)
+      this.$emit("stopLoading", this.usersData);
+    },
   },
 };
 </script>
@@ -63,5 +66,4 @@ export default {
   text-align: center;
   margin-top: 20%;
 }
-
 </style>
