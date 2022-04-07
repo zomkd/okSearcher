@@ -11,10 +11,10 @@ from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 
 
-chrome_options = Options()
-chrome_options.add_argument("--headless")
-driver = uc.Chrome(options=chrome_options)
-# driver = uc.Chrome()
+# chrome_options = Options()
+# chrome_options.add_argument("--headless")
+# driver = uc.Chrome(options=chrome_options)
+driver = uc.Chrome()
 
 ok = Odnoklassniki('CNOCGEKGDIHBABABA', 'tkn1EhliRxCEAvwDOeURwKjZU3ArOtKp15kUfrs4IkgZknRO3FNiQpBqGETq4tuK4FnC3', '61db37441d2c3d823f7aee91a1104b97')
 
@@ -47,10 +47,14 @@ def enter_search_params(search_params):
         for li in lis:
             if li.text == 'Another place':
                 li.click()
+        time.sleep(2)
         select = Select(driver.find_element_by_name('st.country'))
+        time.sleep(2)
         select.select_by_visible_text(search_params['country'])
     if len(search_params['city']) != 0:
+        time.sleep(2)
         driver.find_element_by_xpath("//input[@placeholder='Enter city name']").send_keys(search_params['city'])
+    time.sleep(5)
     driver.find_element_by_xpath("//button[contains(@class, 'button__pe9qo button-core-container__0ej09 squared-button__w4hf7')]").click()
     time.sleep(5)
 
@@ -535,5 +539,4 @@ def create_strong_links(like_count_links,short_road_links):
         for short_road_link in short_road_links:
             if like_count_link['from'] == short_road_link['from'] and like_count_link['to'] == short_road_link['to']:
                 like_count_link['color'] = "red"
-                print('adf')
     return like_count_links
